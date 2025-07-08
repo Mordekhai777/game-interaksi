@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cocokkan Nama dengan Gambar - Mobile Friendly</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px;
+            background: #f0f8ff;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            font-size: 1.8rem;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .images, .names {
+            border: 2px solid #007acc;
+            border-radius: 10px;
+            padding: 15px;
+            background: #ffffff;
+            width: 200px;
+        }
+        .images img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin: 10px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+            touch-action: manipulation;
+        }
+        .images img.selected {
+            border-color: #007acc;
+            box-shadow: 0 0 8px #007acc;
+        }
+        .names div {
+            background: #e6f2ff;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.3s;
+            font-size: 1.1rem;
+            user-select: none;
+        }
+        .names div.selected {
+            border-color: #007acc;
+            box-shadow: 0 0 8px #007acc;
+            background: #d0e7ff;
+        }
+        #check-btn {
+            margin-top: 25px;
+            padding: 14px 35px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            user-select: none;
+        }
+        #check-btn:hover {
+            background-color: #005fa3;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            min-height: 30px;
+            font-weight: bold;
+        }
+
+        /* Responsive style for mobile devices */
+        @media (max-width: 600px) {
+            .container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 320px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .images, .names {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            .images img {
+                width: 80px;
+                height: 80px;
+                margin: 8px 5px;
+            }
+            .names div {
+                font-size: 1.2rem;
+                padding: 14px 10px;
+                margin: 8px 0;
+            }
+            #check-btn {
+                width: 100%;
+                padding: 16px 0;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Cocokkan Nama dengan Gambar</h1>
+    <div class="container">
+        <div class="images">
+            <img src="https://i.imgur.com/8Km9tLL.jpg" alt="Anjing" data-name="Anjing" />
+            <img src="https://i.imgur.com/VuWm5Tc.jpg" alt="Kucing" data-name="Kucing" />
+            <img src="https://i.imgur.com/1bX5QH6.jpg" alt="Burung" data-name="Burung" />
+        </div>
+        <div class="names">
+            <div data-name="Burung">Burung</div>
+            <div data-name="Anjing">Anjing</div>
+            <div data-name="Kucing">Kucing</div>
+        </div>
+    </div>
+    <button id="check-btn">Cek Kecocokan</button>
+    <div id="message"></div>
+
+    <script>
+        const images = document.querySelectorAll('.images img');
+        const names = document.querySelectorAll('.names div');
+        let selectedImage = null;
+        let selectedName = null;
+        const message = document.getElementById('message');
+        const checkBtn = document.getElementById('check-btn');
+
+        images.forEach(img => {
+            img.addEventListener('click', () => {
+                images.forEach(i => i.classList.remove('selected'));
+                img.classList.add('selected');
+                selectedImage = img.getAttribute('data-name');
+                message.textContent = '';
+            });
+        });
+
+        names.forEach(name => {
+            name.addEventListener('click', () => {
+                names.forEach(n => n.classList.remove('selected'));
+                name.classList.add('selected');
+                selectedName = name.getAttribute('data-name');
+                message.textContent = '';
+            });
+        });
+
+        checkBtn.addEventListener('click', () => {
+            if (!selectedImage || !selectedName) {
+                message.textContent = 'Silakan pilih gambar dan nama terlebih dahulu.';
+                message.style.color = 'red';
+                return;
+            }
+            if (selectedImage === selectedName) {
+                message.textContent = 'Selamat! Kecocokan benar.';
+                message.style.color = 'green';
+                // Reset selection
+                images.forEach(i => i.classList.remove('selected'));
+                names.forEach(n => n.classList.remove('selected'));
+                selectedImage = null;
+                selectedName = null;
+            } else {
+                message.textContent = 'Salah, coba lagi!';
+                message.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
